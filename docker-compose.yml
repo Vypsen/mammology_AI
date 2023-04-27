@@ -1,0 +1,74 @@
+version: '3'
+services:
+    backend:
+        build:
+            context: .
+            dockerfile: ./docker/backend/Dockerfile
+        container_name: backend
+        restart: unless-stopped
+        working_dir: /var/www/mammology
+        volumes:
+            - '.:/var/www/mammology'
+        depends_on:
+            - database
+        networks:
+            - my_network
+
+    python:
+        restart: unless-stopped
+        container_name: python
+        build:
+            context: .
+            dockerfile: ./docker/python/Dockerfile
+        ports:
+            - "5000:5000"
+        volumes:
+            - './AI:/var/www/mammology'
+        networks:
+            - my_network
+
+    nginx:
+        container_name: server
+        image: 'nginx:alpine'
+        restart: unless-stopped
+        ports:
+            - '80:80'
+        volumes:
+            - '.:/var/www/mammology'
+            - './docker/nginx/conf.d/:/etc/nginx/conf.d/'
+        depends_on:
+            - backend
+        networks:
+            - my_network
+
+    node:
+        container_name: frontend
+        build:
+            context: .
+            dockerfile: ./docker/nodejs/Dockerfile
+        ports:
+            - '5173:5173'
+        working_dir: /var/www/mammology
+        volumes:
+            - '.:/var/www/mammology'
+
+    database:
+        container_name: db
+        image: 'postgres:14.5'
+        environment:
+            - 'POSTGRES_DB=${DB_DATABASE}'
+            - 'POSTGRES_USER=${DB_USERNAME}'
+            - 'POSTGRES_PASSWORD=${DB_PASSWORD}'
+        ports:
+            - '${DB_PORT}:5432'
+        volumes:
+            - 'postgresql:/var/lib/postgresql/data/'
+
+networks:
+    my_network:
+        driver: bridge
+        name: my_network
+volumes:
+    postgresql:
+        driver: local
+
