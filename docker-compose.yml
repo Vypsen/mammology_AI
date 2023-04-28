@@ -23,16 +23,17 @@ services:
         ports:
             - "5000:5000"
         volumes:
-            - './AI:/var/www/mammology'
+            - './AI:/python'
         networks:
             - my_network
+        command: [ "python", "app.py" ]
 
     nginx:
         container_name: server
         image: 'nginx:alpine'
         restart: unless-stopped
         ports:
-            - '80:80'
+            - '8080:8080'
         volumes:
             - '.:/var/www/mammology'
             - './docker/nginx/conf.d/:/etc/nginx/conf.d/'

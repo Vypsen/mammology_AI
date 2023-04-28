@@ -5,17 +5,15 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /var/www/mammology
+WORKDIR /python
 
-COPY requirements.txt .
-# установка зависимостей
+RUN /usr/local/bin/python -m pip install --upgrade pip
 
-RUN pip install Flask opencv-python pylibjpeg-libjpeg pydicom
+RUN pip install Flask opencv-python pylibjpeg-libjpeg pydicom flask-cors torchvision
 RUN #pip install --no-cache-dir -r requirements.txt
 
 COPY ./AI .
 
-# копирование содержимого локальной директории src в рабочую директорию
 EXPOSE 5000
-# команда, выполняемая при запуске контейнера
+
 CMD [ "python", "app.py" ]

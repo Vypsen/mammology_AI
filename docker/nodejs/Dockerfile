@@ -12,6 +12,5 @@ USER node
 
 EXPOSE 5173
 
-
 # https://github.com/vitejs/vite/discussions/3396
-CMD ["sh", "-c", "npm config set legacy-peer-deps true && npm install --legacy-peer-deps && npm run dev -- --host "]
+CMD ["sh", "-c", "npm install && npm run watch"]
