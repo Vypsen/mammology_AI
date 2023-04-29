@@ -18,10 +18,14 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', PageController::class . '@pageView')
         ->name('page');
+
+    Route::post('/predict', ImageController::class . '@setPredict')
+        ->name('predict');
 });
 
 Route::post('/logout', AuthController::class . '@logout')
     ->name('logout');
+
 
 Route::prefix('image')->group(function () {
     Route::post('upload', ImageController::class . '@upload')

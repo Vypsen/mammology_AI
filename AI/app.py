@@ -5,23 +5,18 @@ from torchvision import transforms, models
 from PIL import Image
 import torch
 import os.path
+import json
 import io
 
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/', methods = ['POST'])
+@app.route('/image/upload', methods = ['POST'])
 def hello():
-    file = request.files['file'].read()
-
+    root_img = request.files['file'].read()
     root_par_model = 'res18_fisrt.pth'
-    root_img = file
 
-#     if os.path.exists(root_par_model):
-#         return 'hello'
-#     else: return os.path.abspath(root_par_model)
-#     return root_img
     model = models.resnet18(pretrained=True)
     model.load_state_dict(torch.load(root_par_model))
 
@@ -57,11 +52,7 @@ def hello():
     probabilities = torch.nn.functional.softmax(output[0], dim=0)
     predicted_class = torch.argmax(probabilities).item()
 
-    if predicted_class :
-        return 'Я думаю, вы больны, но это не точно'
-    return 'Я думаю, вы здоровы, но это не точно'
-
-
+    return json.dumps(predicted_class)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

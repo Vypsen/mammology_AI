@@ -24,19 +24,25 @@ class Mammogram extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function uploadFile()
-    {
-
-    }
-
     public static function create($filename): Mammogram
     {
         $image = new self();
         $image->user_id = Auth::user()->id;
-        $image->filename = $filename;
+
+        $id_img = 1;
+        if (Mammogram::query()->exists())
+            $id_img = Mammogram::query()->latest()->first()->id + 1;
+
+        $image->filename = $id_img . '_' . $filename;
 
         $image->save();
 
         return $image;
+    }
+
+    public function enterPredict($predict)
+    {
+        $this->prediction = $predict;
+        $this->save();
     }
 }
