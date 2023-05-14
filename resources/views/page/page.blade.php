@@ -29,7 +29,7 @@
                 </form>
             </div>
             <div class="upload-img d-none pt-3">
-                <img id="view-img" width="500" height="300" class="img-thumbnail img-fluid" src="">
+                <img id="view-img"  class="img-thumbnail img-fluid" src="">
             </div>
             <div class="spinner-border loading pt-3 d-none" role="status"></div>
             <div class="card answer-ai p-0 mt-3 d-none">
@@ -70,6 +70,7 @@
                 processData: false
             })
                 .done(function (data) {
+                    console.log(data);
                     $('#view-img').attr('src', 'storage/uploads/' + data['filename'])
                     $('.upload-img').removeClass('d-none')
                 });

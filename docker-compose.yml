@@ -1,11 +1,13 @@
 version: '3'
 services:
-    backend:
+    app:
         build:
             context: .
             dockerfile: ./docker/backend/Dockerfile
-        container_name: backend
+        container_name: app
         restart: unless-stopped
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         working_dir: /var/www/mammology
         volumes:
             - '.:/var/www/mammology'
@@ -38,20 +40,9 @@ services:
             - '.:/var/www/mammology'
             - './docker/nginx/conf.d/:/etc/nginx/conf.d/'
         depends_on:
-            - backend
+            - app
         networks:
             - my_network
-
-    node:
-        container_name: frontend
-        build:
-            context: .
-            dockerfile: ./docker/nodejs/Dockerfile
-        ports:
-            - '5173:5173'
-        working_dir: /var/www/mammology
-        volumes:
-            - '.:/var/www/mammology'
 
     database:
         container_name: db
