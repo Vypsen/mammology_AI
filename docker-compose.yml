@@ -35,7 +35,7 @@ services:
         image: 'nginx:alpine'
         restart: unless-stopped
         ports:
-            - '8080:8080'
+            - '1234:1234'
         volumes:
             - '.:/var/www/mammology'
             - './docker/nginx/conf.d/:/etc/nginx/conf.d/'
