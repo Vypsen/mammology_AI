@@ -86,10 +86,11 @@
                 processData: false
             })
                 .done(function (data) {
-                    if (data === 1) {
+                    console.log(data)
+                    if (data == 1) {
                         $(".answer-ai").append(' <p class="alert alert-danger m-0">' + "Я думаю, у вас рак" + '</p>');
                     } else {
-                        $(".answer-ai").append(' <p class="alert alert-success m-0">' + "Я думаю, у вы здоровы " + '</p>');
+                        $(".answer-ai").append(' <p class="alert alert-success m-0">' + "Я думаю, вы здоровы " + '</p>');
                     }
                     $('.answer-ai').removeClass('d-none')
                 });
