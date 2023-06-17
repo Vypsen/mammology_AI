@@ -9,7 +9,7 @@ WORKDIR /python
 
 RUN /usr/local/bin/python -m pip install --upgrade pip
 
-RUN pip install Flask opencv-python pylibjpeg-libjpeg pydicom flask-cors torchvision
+RUN pip install Flask opencv-python pylibjpeg-libjpeg pydicom flask-cors tensorflow scikit-image scikit-learn pandas
 RUN #pip install --no-cache-dir -r requirements.txt
 
 COPY ./AI .
