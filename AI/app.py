@@ -20,12 +20,6 @@ from sklearn.cluster import KMeans
 app = Flask(__name__)
 CORS(app)
 
-def image_to_pandas(image):
-    df = pd.DataFrame([image[:,:,0].flatten(),
-                       image[:,:,1].flatten(),
-                       image[:,:,2].flatten()]).T
-    df.columns = ['Red_Channel','Green_Channel','Blue_Channel']
-    return df
 
 @app.route('/image/upload', methods=['POST'])
 def hello():
@@ -37,16 +31,23 @@ def hello():
     img = Image.open(io.BytesIO(root_img)).convert('RGB')
     X = np.array([img_to_array(img)])
     pred_proba = model.predict(val_datagen.flow(X))[0][0]
-    pred = 0
+    pred = 1
     if pred_proba >= 0.5:
-        pred = 1
+        pred = 0
 
     image_list = []
-    df_rgb_img = image_to_pandas(X)
+    rgb_img = np.array(Image.open(io.BytesIO(root_img)).convert('RGB'))
+
+    df_rgb_img = pd.DataFrame([rgb_img[:, :, 0].flatten(),
+                               rgb_img[:, :, 1].flatten(),
+                               rgb_img[:, :, 2].flatten()]).T
+    df_rgb_img.columns = ['Red_Channel', 'Green_Channel', 'Blue_Channel']
+
     kmeans = KMeans(n_clusters=3, random_state=42).fit(df_rgb_img)
-    result = kmeans.labels_.reshape(X.shape[0], X.shape[1])
-    for n, ax in enumerate(3):
-        imge = img
+    result = kmeans.labels_.reshape(rgb_img.shape[0], rgb_img.shape[1])
+
+    for n, ax in enumerate(range(3)):
+        imge = Image.open(io.BytesIO(root_img)).convert('RGB')
         img_array = np.array(imge)
         img_array[:, :, 0] = img_array[:, :, 0] * (result == [n])
         img_array[:, :, 1] = img_array[:, :, 1] * (result == [n])
