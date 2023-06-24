@@ -24,18 +24,19 @@ services:
             dockerfile: ./docker/python/Dockerfile
         ports:
             - "5000:5000"
+        working_dir: /python
         volumes:
             - './AI:/python'
         networks:
             - my_network
-        command: [ "python", "app.py" ]
+        command: [ "python", "app.py", "gunicorn app:app --workers 4 --threads 2"]
 
     nginx:
         container_name: server
         image: 'nginx:alpine'
         restart: unless-stopped
         ports:
-            - '1234:1234'
+            - '80:80'
         volumes:
             - '.:/var/www/mammology'
             - './docker/nginx/conf.d/:/etc/nginx/conf.d/'

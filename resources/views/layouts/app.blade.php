@@ -12,6 +12,7 @@
     <!-- Scripts -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}" type="text/css">
     <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('js/requests.js') }}"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">

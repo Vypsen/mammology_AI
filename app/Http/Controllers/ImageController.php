@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mammogram;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
+
+    public function test()
+    {
+        $client = new Client();
+        $response = $client->request('GET', 'http://localhost:5000/ai');
+
+    }
+
     public function upload(Request $request)
     {
         $file = $request->file('file');

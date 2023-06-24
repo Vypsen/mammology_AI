@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
 Route::post('/logout', AuthController::class . '@logout')
     ->name('logout');
 
+Route::get('/test', ImageController::class . '@test')
+    ->name('test');
+
 
 Route::prefix('image')->group(function () {
     Route::post('upload', ImageController::class . '@upload')
