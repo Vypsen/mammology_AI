@@ -42,11 +42,12 @@
                     </div>
                 </div>
             </div>
-            <div class="container mt-3">
+            <div class="app container mt-3">
                 <div class="row">
                     <div class="col">
                         <div class="upload-img d-none pt-3">
-                            <p>Ваше изображение</p>
+                            <a href="#" class="reload link-success">Загрузить новый снимок</a>
+                            <p>Ваш снимок</p>
                             <img id="view-img" class="img-thumbnail img-fluid" src="">
                         </div>
                         <div class="card answer-ai p-0 mt-3 d-none">
@@ -54,8 +55,10 @@
                     </div>
                     <div class="col">
                         <div id="image-container" class="d-none">
-                            <h4>Зоны подозрительные на рак</h4>
-                            <div id="carouselExampleCaptions" class="carousel slide" data-bs-interval="false"  >
+                            <div class="row">
+                                <div class="col-7 align-text-bottom"><h4>Зоны подозрительные на рак</h4></div>
+                            </div>
+                            <div id="carouselExampleCaptions" class="carousel slide" data-bs-interval="false">
                                 <div class="carousel-indicators">
                                     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
                                             class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -98,4 +101,12 @@
             </div>
         </div>
     </div>
+    <script>
+        $('.reload').click(function (ev) {
+            console.log(123)
+            $('#image').val('');
+            $('.loading').addClass('d-none')
+            $('.app').load(location.href + ' .app');
+        })
+    </script>
 @endsection

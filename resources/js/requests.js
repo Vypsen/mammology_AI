@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+
+
+
     $('.mammograma').submit(function (ev) {
         ev.preventDefault()
 
@@ -6,8 +10,9 @@ $(document).ready(function () {
         data.append('file', $("#image")[0].files[0]);
 
         $('.loading').removeClass('d-none');
-
-        $.when(sendPhp(data), getCluster(data), getPrediction(data)).done(function (responsePHP, responseCluster, responseAI) {
+        getCluster(data)
+        $.when(sendPhp(data), getPrediction(data)).done(function (responsePHP, responseCluster, responseAI) {
+            $('#view-img').attr('src', data)
             $('.loading').addClass('d-none');
             sendPredict({'filename': responsePHP[0]['filename'], 'predict': responseAI[0]})
 
@@ -31,7 +36,6 @@ function sendPhp(data) {
     })
         .done(function (data) {
             console.log(data);
-            $('#view-img').attr('src', 'storage/uploads/' + data['filename'])
             $('.upload-img').removeClass('d-none')
         });
 }
@@ -48,13 +52,11 @@ function getCluster(data) {
             var images = response.images;
             for (var i = 0; i < images.length; i++) {
                 var img = 'data:image/png;base64,' + images[i];
-                $('.carousel-inner > #'+ i + ' > img' ).attr('src', img)
-                // $('#image-container').append(img);
+                $('.carousel-inner > #' + i + ' > img').attr('src', img)
             }
             $('#image-container').removeClass('d-none')
         },
     })
-
 }
 
 function getPrediction(data) {
@@ -69,7 +71,7 @@ function getPrediction(data) {
             if (data == 1) {
                 $(".answer-ai").append(' <p class="alert alert-danger m-0">' + "У вас наблюдается подозрение на злокачетсвенное образование. Советуем обратиться к специалисту " + '</p>');
             } else {
-                $(".answer-ai").append(' <p class="alert alert-success m-0">' + "У не вас наблюдается подозрение на злокачетсвенное образование. " + '</p>');
+                $(".answer-ai").append(' <p class="alert alert-success m-0">' + "У вас не наблюдается подозрение на злокачетсвенное образование. " + '</p>');
             }
             $('.answer-ai').removeClass('d-none')
         }
@@ -87,3 +89,4 @@ function sendPredict(data) {
         data: data,
     })
 }
+

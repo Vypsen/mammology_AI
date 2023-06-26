@@ -38,8 +38,6 @@ class ImageController extends Controller
             'filename' => 'required',
         ]);
 
-        var_dump($data);
-
         $file = Mammogram::query()->where('filename', $data['filename'])->first();
         $file->enterPredict($data['predict']);
     }
